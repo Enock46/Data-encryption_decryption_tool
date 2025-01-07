@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for the cyber theme */
+.neon-text {
+    color: #ff0099;
+    text-shadow: 0 0 5px #ff0099, 0 0 10px #ff0099, 0 0 20px #ff0099;
+}
+
+.btn-cyber {
+    background-color: #ff0099;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-cyber:hover {
+    background-color: #ff33cc;
+    transform: scale(1.05);
+}
+
+.input-cyber {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px;
+    border: 2px solid #ff0099;
+    border-radius: 8px;
+    background: transparent;
+    color: white;
+}

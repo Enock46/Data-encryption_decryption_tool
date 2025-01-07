@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message-box {
+            background: #e7f3fe;
+            color: #034ea2;
+            padding: 10px;
+            border: 1px solid #b3d8fd;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Encryption Tool</h1>
+
+        <!-- Generate Key Form -->
+        <form method="POST" action="{{ url_for('generate_key_route') }}">
+            <button type="submit">Generate Encryption Key</button>
+        </form>
+
+        <!-- Encrypt Form -->
+        <form method="POST" action="{{ url_for('encrypt_route') }}">
+            <label for="message">Message to Encrypt:</label>
+            <input type="text" name="message" id="message" required>
+            <button type="submit">Encrypt</button>
+        </form>
+
+        <!-- Decrypt Form -->
+        <form method="POST" action="{{ url_for('decrypt_route') }}">
+            <label for="encrypted_message">Encrypted Message to Decrypt:</label>
+            <input type="text" name="encrypted_message" id="encrypted_message" required>
+            <button type="submit">Decrypt</button>
+        </form>
+
+        <!-- Display Encrypted Message -->
+        {% if encrypted_message %}
+        <div class="message-box">
+            <strong>Encrypted Message:</strong>
+            <p>{{ encrypted_message }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Display Decrypted Message -->
+        {% if decrypted_message %}
+        <div class="message-box">
+            <strong>Decrypted Message:</strong>
+            <p>{{ decrypted_message }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="message-box">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
