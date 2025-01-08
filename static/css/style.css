@@ -1,36 +1,128 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Custom styles for the cyber theme */
-.neon-text {
-    color: #ff0099;
-    text-shadow: 0 0 5px #ff0099, 0 0 10px #ff0099, 0 0 20px #ff0099;
+/* General Body Styling */
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background: linear-gradient(120deg, #0d1117, #1a1f25);
+    color: #00ffff;
+    margin: 0;
+    padding: 0;
 }
 
-.btn-cyber {
-    background-color: #ff0099;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    text-transform: uppercase;
+/* Header Styling */
+header {
+    background: #121212;
+    color: #00ffff;
+    padding: 1.5em;
+    text-align: center;
+    border-bottom: 2px solid #00ffff;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+    text-shadow: 0px 0px 10px #00ffff;
+}
+
+header nav a {
+    color: #00ffff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+header nav a:hover {
+    color: #ff00ff;
+    text-shadow: 0px 0px 10px #ff00ff;
+}
+
+/* Main Container */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #00ffff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px 2px #00ffff;
+}
+
+h2 {
+    text-align: center;
+    color: #ff00ff;
+    text-shadow: 0px 0px 8px #ff00ff;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
     font-weight: bold;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
+    color: #00ffff;
+    text-shadow: 0px 0px 5px #00ffff;
 }
 
-.btn-cyber:hover {
-    background-color: #ff33cc;
-    transform: scale(1.05);
-}
-
-.input-cyber {
+textarea {
     width: 100%;
+    height: 100px;
+    background: #1a1f25;
+    border: 1px solid #00ffff;
+    color: #00ffff;
+    border-radius: 5px;
     padding: 10px;
-    margin: 5px 0 15px;
-    border: 2px solid #ff0099;
-    border-radius: 8px;
-    background: transparent;
-    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    resize: none;
+    box-shadow: inset 0px 0px 8px #00ffff;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #ff00ff;
+    box-shadow: inset 0px 0px 8px #ff00ff;
+}
+
+/* Buttons */
+button {
+    background: linear-gradient(90deg, #00ffff, #ff00ff);
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #000;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    text-shadow: 0px 0px 5px #000;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #ff00ff, #00ffff);
+    color: #fff;
+    text-shadow: 0px 0px 8px #fff;
+    box-shadow: 0px 0px 10px 2px #00ffff;
+}
+
+/* Flash Messages */
+.flash-messages {
+    list-style: none;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #ff00ff;
+    border-radius: 5px;
+    margin-top: 20px;
+    box-shadow: 0px 0px 10px #ff00ff;
+}
+
+.flash-messages li {
+    padding: 10px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.flash-messages .success {
+    background: #00ff00;
+    color: #000;
+}
+
+.flash-messages .error {
+    background: #ff0000;
+    color: #fff;
 }

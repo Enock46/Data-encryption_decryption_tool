@@ -1,77 +1,76 @@
-from flask import Flask, request, render_template, flash, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from cryptography.fernet import Fernet
+import os
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"
+app.secret_key = "supersecretkey"  # For flash messages
 
-# Key generation route
-@app.route("/generate_key", methods=["POST"])
-def generate_key_route():
+# Key generation and loading
+KEY_FILE = "encryption.key"
+
+def generate_key():
     key = Fernet.generate_key()
-    with open("encryption.key", "wb") as key_file:
+    with open(KEY_FILE, "wb") as key_file:
         key_file.write(key)
-    flash("Key generated and saved to 'encryption.key'.", "success")
-    return redirect(url_for("home"))
 
-# Encryption route
-@app.route("/encrypt", methods=["POST"])
-def encrypt_route():
-    key = load_key()
-    if not key:
-        flash("Encryption key not found. Please generate a key first.", "error")
-        return redirect(url_for("home"))
-
-    message = request.form["message"]
-    encrypted_message = encrypt_message(message, key)
-    return render_template(
-        "index.html",
-        encrypted_message=encrypted_message.decode(),
-        decrypted_message=None,
-    )
-
-# Decryption route
-@app.route("/decrypt", methods=["POST"])
-def decrypt_route():
-    key = load_key()
-    if not key:
-        flash("Decryption key not found. Please generate a key first.", "error")
-        return redirect(url_for("home"))
-
-    encrypted_message = request.form["encrypted_message"]
-    try:
-        decrypted_message = decrypt_message(encrypted_message.encode(), key)
-        return render_template(
-            "index.html",
-            encrypted_message=None,
-            decrypted_message=decrypted_message,
-        )
-    except Exception as e:
-        flash(f"Decryption failed: {e}", "error")
-        return redirect(url_for("home"))
-
-# Load encryption key
 def load_key():
-    try:
-        with open("encryption.key", "rb") as key_file:
+    if os.path.exists(KEY_FILE):
+        with open(KEY_FILE, "rb") as key_file:
             return key_file.read()
-    except FileNotFoundError:
-        return None
+    return None
 
-# Encrypt a message
+# Encryption and decryption
 def encrypt_message(message, key):
     fernet = Fernet(key)
     return fernet.encrypt(message.encode())
 
-# Decrypt a message
 def decrypt_message(encrypted_message, key):
     fernet = Fernet(key)
-    return fernet.decrypt(encrypted_message).decode()
+    try:
+        return fernet.decrypt(encrypted_message).decode()
+    except Exception:
+        return None
 
-# Home route
 @app.route("/")
-def home():
-    return render_template("index.html", encrypted_message=None, decrypted_message=None)
+def index():
+    return render_template("index.html")
 
+@app.route("/generate-key")
+def generate_key_route():
+    generate_key()
+    flash("Encryption key has been generated successfully!", "success")
+    return redirect(url_for("index"))
+
+@app.route("/encrypt", methods=["GET", "POST"])
+def encrypt():
+    if request.method == "POST":
+        key = load_key()
+        if not key:
+            flash("No encryption key found. Please generate a key first.", "error")
+            return redirect(url_for("index"))
+
+        message = request.form.get("message")
+        if message:
+            encrypted_message = encrypt_message(message, key)
+            return render_template("encrypt.html", encrypted_message=encrypted_message.decode())
+    return render_template("encrypt.html")
+
+@app.route("/decrypt", methods=["GET", "POST"])
+def decrypt():
+    if request.method == "POST":
+        key = load_key()
+        if not key:
+            flash("No encryption key found. Please generate a key first.", "error")
+            return redirect(url_for("index"))
+
+        encrypted_message = request.form.get("encrypted_message")
+        if encrypted_message:
+            decrypted_message = decrypt_message(encrypted_message.encode(), key)
+            if decrypted_message:
+                return render_template("decrypt.html", decrypted_message=decrypted_message)
+            else:
+                flash("Decryption failed. Ensure the encrypted message is valid.", "error")
+    return render_template("decrypt.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

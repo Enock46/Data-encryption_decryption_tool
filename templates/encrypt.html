@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Encrypt a Message</h2>
+    <form method="post">
+        <label for="message">Message:</label>
+        <textarea name="message" id="message" rows="4" required></textarea>
+        <button type="submit">Encrypt</button>
+    </form>
+    {% if encrypted_message %}
+    <div class="result">
+        <h3>Encrypted Message:</h3>
+        <textarea readonly rows="4">{{ encrypted_message }}</textarea>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
